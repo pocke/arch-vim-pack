@@ -46,13 +46,18 @@ func Main() error {
 	}
 	os.Chdir(dir)
 	defer os.Chdir(prevDir)
-	if err := exec.Command("makepkg", "-s", "--noconfirm").Run(); err != nil {
+	if err := Exec("makepkg", "-s", "--noconfirm"); err != nil {
 		return err
 	}
 
-	exec.Command("bash", "-c", "cp *pkg.tar.xz "+prevDir).Run()
+	return Exec("bash", "-c", "cp *pkg.tar.xz "+prevDir)
+}
 
-	return nil
+func Exec(cmd string, args ...string) error {
+	c := exec.Command(cmd, args...)
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
+	return c.Run()
 }
 
 func PutFile(dir, file string) error {
