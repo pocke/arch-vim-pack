@@ -14,11 +14,11 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
-	"strings"
-	"os"
-	"time"
 	"io/ioutil"
+	"os"
 	"path/filepath"
+	"strings"
+	"time"
 )
 
 func bindataRead(data []byte, name string) ([]byte, error) {
@@ -47,9 +47,9 @@ type asset struct {
 }
 
 type bindataFileInfo struct {
-	name string
-	size int64
-	mode os.FileMode
+	name    string
+	size    int64
+	mode    os.FileMode
 	modTime time.Time
 }
 
@@ -87,8 +87,8 @@ func dataPkgbuild() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/PKGBUILD", size: 10715, mode: os.FileMode(420), modTime: time.Unix(1446990084, 0)}
-	a := &asset{bytes: bytes, info:  info}
+	info := bindataFileInfo{name: "data/PKGBUILD", size: 10715, mode: os.FileMode(420), modTime: time.Unix(1447205937, 0)}
+	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
@@ -107,8 +107,8 @@ func dataArchlinuxVim() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/archlinux.vim", size: 1090, mode: os.FileMode(420), modTime: time.Unix(1446937628, 0)}
-	a := &asset{bytes: bytes, info:  info}
+	info := bindataFileInfo{name: "data/archlinux.vim", size: 1090, mode: os.FileMode(420), modTime: time.Unix(1447205937, 0)}
+	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
@@ -127,8 +127,8 @@ func dataGvimDesktop() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/gvim.desktop", size: 2327, mode: os.FileMode(420), modTime: time.Unix(1446937628, 0)}
-	a := &asset{bytes: bytes, info:  info}
+	info := bindataFileInfo{name: "data/gvim.desktop", size: 2327, mode: os.FileMode(420), modTime: time.Unix(1447205937, 0)}
+	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
@@ -147,8 +147,8 @@ func dataGvimInstall() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/gvim.install", size: 201, mode: os.FileMode(420), modTime: time.Unix(1446937628, 0)}
-	a := &asset{bytes: bytes, info:  info}
+	info := bindataFileInfo{name: "data/gvim.install", size: 201, mode: os.FileMode(420), modTime: time.Unix(1447205937, 0)}
+	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
@@ -167,8 +167,8 @@ func dataVimrc() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/vimrc", size: 841, mode: os.FileMode(420), modTime: time.Unix(1446937628, 0)}
-	a := &asset{bytes: bytes, info:  info}
+	info := bindataFileInfo{name: "data/vimrc", size: 841, mode: os.FileMode(420), modTime: time.Unix(1447205937, 0)}
+	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
@@ -191,7 +191,7 @@ func Asset(name string) ([]byte, error) {
 // It simplifies safe initialization of global variables.
 func MustAsset(name string) []byte {
 	a, err := Asset(name)
-	if (err != nil) {
+	if err != nil {
 		panic("asset: Asset(" + name + "): " + err.Error())
 	}
 
@@ -224,11 +224,11 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"data/PKGBUILD": dataPkgbuild,
+	"data/PKGBUILD":      dataPkgbuild,
 	"data/archlinux.vim": dataArchlinuxVim,
-	"data/gvim.desktop": dataGvimDesktop,
-	"data/gvim.install": dataGvimInstall,
-	"data/vimrc": dataVimrc,
+	"data/gvim.desktop":  dataGvimDesktop,
+	"data/gvim.install":  dataGvimInstall,
+	"data/vimrc":         dataVimrc,
 }
 
 // AssetDir returns the file names below a certain
@@ -267,68 +267,63 @@ func AssetDir(name string) ([]string, error) {
 }
 
 type bintree struct {
-	Func func() (*asset, error)
+	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
 	"data": &bintree{nil, map[string]*bintree{
-		"PKGBUILD": &bintree{dataPkgbuild, map[string]*bintree{
-		}},
-		"archlinux.vim": &bintree{dataArchlinuxVim, map[string]*bintree{
-		}},
-		"gvim.desktop": &bintree{dataGvimDesktop, map[string]*bintree{
-		}},
-		"gvim.install": &bintree{dataGvimInstall, map[string]*bintree{
-		}},
-		"vimrc": &bintree{dataVimrc, map[string]*bintree{
-		}},
+		"PKGBUILD":      &bintree{dataPkgbuild, map[string]*bintree{}},
+		"archlinux.vim": &bintree{dataArchlinuxVim, map[string]*bintree{}},
+		"gvim.desktop":  &bintree{dataGvimDesktop, map[string]*bintree{}},
+		"gvim.install":  &bintree{dataGvimInstall, map[string]*bintree{}},
+		"vimrc":         &bintree{dataVimrc, map[string]*bintree{}},
 	}},
 }}
 
 // RestoreAsset restores an asset under the given directory
 func RestoreAsset(dir, name string) error {
-        data, err := Asset(name)
-        if err != nil {
-                return err
-        }
-        info, err := AssetInfo(name)
-        if err != nil {
-                return err
-        }
-        err = os.MkdirAll(_filePath(dir, filepath.Dir(name)), os.FileMode(0755))
-        if err != nil {
-                return err
-        }
-        err = ioutil.WriteFile(_filePath(dir, name), data, info.Mode())
-        if err != nil {
-                return err
-        }
-        err = os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
-        if err != nil {
-                return err
-        }
-        return nil
+	data, err := Asset(name)
+	if err != nil {
+		return err
+	}
+	info, err := AssetInfo(name)
+	if err != nil {
+		return err
+	}
+	err = os.MkdirAll(_filePath(dir, filepath.Dir(name)), os.FileMode(0755))
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(_filePath(dir, name), data, info.Mode())
+	if err != nil {
+		return err
+	}
+	err = os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // RestoreAssets restores an asset under the given directory recursively
 func RestoreAssets(dir, name string) error {
-        children, err := AssetDir(name)
-        // File
-        if err != nil {
-                return RestoreAsset(dir, name)
-        }
-        // Dir
-        for _, child := range children {
-                err = RestoreAssets(dir, filepath.Join(name, child))
-                if err != nil {
-                        return err
-                }
-        }
-        return nil
+	children, err := AssetDir(name)
+	// File
+	if err != nil {
+		return RestoreAsset(dir, name)
+	}
+	// Dir
+	for _, child := range children {
+		err = RestoreAssets(dir, filepath.Join(name, child))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func _filePath(dir, name string) string {
-        cannonicalName := strings.Replace(name, "\\", "/", -1)
-        return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
+	cannonicalName := strings.Replace(name, "\\", "/", -1)
+	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-
